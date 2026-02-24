@@ -1,5 +1,9 @@
 {
   "name": "@midspiral/lemmafit",
+  "description": "Make agents prove that their code is correct.",
+  "author": "midspiral",
+  "homepage": "https://lemmafit.com",
+  "keywords": ["formal verification", "claude"],
   "version": "0.1.0",
   "type": "commonjs",
   "bin": {
