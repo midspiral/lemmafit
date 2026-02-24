@@ -7,11 +7,14 @@ Lemmafit integrates [Dafny](https://dafny.org/) formal verification into your de
 ## Quick Start
 
 ```bash
+# Install lemmafit globally
+npm install -g "@midspiral/lemmafit"
+
 # Create a new project
-npm install -g @midspiral/lemmafit
+lemmafit init PROJECT_NAME
+cd PROJECT_NAME
 
 # Install deps (downloads Dafny automatically)
-lemmafit init
 npm install
 
 # In one terminal, start the verification daemon + Vite dev server
