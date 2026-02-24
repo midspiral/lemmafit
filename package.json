@@ -1,7 +1,6 @@
 {
-  "name": "lemmafit",
+  "name": "@midspiral/lemmafit",
   "version": "0.1.0",
-  "private": true,
   "type": "commonjs",
   "bin": {
     "lemmafit": "./cli/lemmafit.js",
@@ -18,6 +17,8 @@
   },
   "dependencies": {
     "js-yaml": "^4.1.1",
-    "ws": "^8.18.0"
-  }
+    "ws": "^8.18.0",
+    "claimcheck": "0.1.0"
+  },
+  "publishConfig": { "access": "restricted" }
 }
