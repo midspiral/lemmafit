@@ -1,0 +1,3 @@
+# Dev-only docs and files (not shipped with npm package)
+.claude/
+dafny/

@@ -1,0 +1,23 @@
+{
+  "name": "lemmafit",
+  "version": "0.1.0",
+  "private": true,
+  "type": "commonjs",
+  "bin": {
+    "lemmafit": "./cli/lemmafit.js",
+    "lemmafit-daemon": "./cli/daemon.js",
+    "lemmafit-verify-hook": "./cli/verify-hook.js",
+    "lemmafit-context-hook": "./cli/context-hook.js",
+    "lemmafit-download-dafny": "./lib/download-dafny.js",
+    "lemmafit-sync": "./cli/sync.js",
+    "lemmafit-session-hook": "./cli/session-hook.js",
+    "lemmafit-generate-guarantees": "./cli/generate-guarantees-md.js"
+  },
+  "scripts": {
+    "postinstall": "node ./cli/sync.js && node ./cli/download-dafny2js.js && node ./lib/download-dafny.js"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.1",
+    "ws": "^8.18.0"
+  }
+}

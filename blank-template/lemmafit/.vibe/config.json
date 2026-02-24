@@ -1,0 +1,5 @@
+{
+  "entry": "lemmafit/dafny/Domain.dfy",
+  "appCore": "AppCore",
+  "outputName": "Domain"
+}

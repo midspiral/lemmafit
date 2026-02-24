@@ -1,0 +1,3 @@
+node_modules/
+*~
+lemmafit/.vibe/daemon.sock

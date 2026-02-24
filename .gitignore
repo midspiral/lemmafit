@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Build outputs
+client/dist/
+package-lock.json
+
+# Dafny binary (downloaded at install time)
+.dafny/
+
+# dafny2js binary (downloaded at install time)
+.dafny2js/
+
+# Environment
+.env
+.env.local
+
+# Logs
+*.log
+
+# docs/ ships with the npm package (contains CLAUDE_INSTRUCTIONS.md read by session-hook)
