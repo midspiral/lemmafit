@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install --ignore-scripts
+
+      - name: lemmafit init produces expected files
+        run: |
+          node cli/lemmafit.js init /tmp/test-project
+          test -f /tmp/test-project/package.json
+          test -f /tmp/test-project/SPEC.yaml
+          test -f /tmp/test-project/lemmafit/dafny/Domain.dfy
+          test -f /tmp/test-project/lemmafit/.vibe/config.json
+          test -f /tmp/test-project/.gitignore
+          test -f /tmp/test-project/.claude/settings.json
+          test -f /tmp/test-project/.claude/CLAUDE.md
+          test -d /tmp/test-project/.claude/commands
+          test -d /tmp/test-project/.claude/skills
+          # template.gitignore should not exist in the output
+          test ! -f /tmp/test-project/template.gitignore
+
+      - name: lemmafit sync is idempotent
+        run: |
+          node cli/lemmafit.js sync /tmp/test-project
+          node cli/lemmafit.js sync /tmp/test-project
+          # CLAUDE.md should contain the pointer line exactly once
+          count=$(grep -c "LEMMAFIT SYSTEM PROMPT" /tmp/test-project/.claude/CLAUDE.md)
+          test "$count" -eq 1

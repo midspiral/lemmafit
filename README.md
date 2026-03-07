@@ -42,7 +42,7 @@ claude
 2. The agent will write a `SPEC.yaml` and write verified logic in `lemmafit/dafny/Domain.dfy`
 3. The **daemon** watches `.dfy` files, runs `dafny verify`, and on success compiles to `src/dafny/Domain.cjs` + `src/dafny/app.ts`
 4. The agent will hook the generated TypeScript API into a React app — the logic is proven correct
-5. After proofs complete, a guarantees report is generated with details about what properties of your app are proven
+5. After proofs complete, run custom command in Claude Code `/guarantees` to activate claimcheck and generate a guarantees report
 
 ## Project Structure
 
@@ -52,6 +52,7 @@ my-app/
 ├── lemmafit/
 │   ├── dafny/
 │   │   └── Domain.dfy           # Your verified Dafny logic
+│   │   └── Replay.dfy           # Generic Replay kernel
 │   ├── .vibe/
 │   │   ├── config.json           # Project config
 │   │   ├── status.json           # Verification status (generated)
@@ -61,7 +62,7 @@ my-app/
 ├── src/
 │   ├── dafny/
 │   │   ├── Domain.cjs            # Compiled JS (generated)
-│   │   └── app.ts                # TypeScript API (generated)
+│   │   └── app.ts                # TypeScript API (generated - DO NOT EDIT)
 │   ├── App.tsx                   # Your React app
 │   └── main.tsx
 ├── .claude/                      # Hooks & settings (managed by lemmafit)

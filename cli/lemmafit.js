@@ -40,7 +40,8 @@ function copyDir(src, dest) {
   fs.mkdirSync(dest, { recursive: true });
   for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
     const srcPath = path.join(src, entry.name);
-    const destPath = path.join(dest, entry.name);
+    const destName = entry.name === 'template.gitignore' ? '.gitignore' : entry.name;
+    const destPath = path.join(dest, destName);
     if (entry.isDirectory()) {
       copyDir(srcPath, destPath);
     } else {
@@ -106,15 +107,14 @@ function initProject(targetDir, templateName, serverBase) {
   console.log('');
   console.log(`  cd ${targetDir}`);
   console.log('  npm install          # Downloads Dafny, installs deps, syncs hooks');
-  console.log('  npm run dev          # Starts daemon + Vite');
+  console.log('  npm run daemon       # In one terminal, start the verification daemon');
+  console.log('  npm run dev          # In another terminal, start the Vite dev server');
   if (serverBase.toLowerCase() !== 'none') {
     console.log('  lemmafit dashboard   # Open the dashboard');
   }
   console.log('');
   if (serverBase.toLowerCase() !== 'none') {
     console.log(`Server: ${serverBase}`);
-  } else {
-    console.log('Server: none (dashboard disabled)');
   }
   console.log('Then open Claude Code in the project directory.');
   console.log('');
