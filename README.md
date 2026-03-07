@@ -8,7 +8,7 @@ Lemmafit integrates [Dafny](https://dafny.org/) formal verification into your de
 
 ```bash
 # Install lemmafit globally
-npm install -g "@midspiral/lemmafit"
+npm install -g lemmafit
 
 # Create a new project
 lemmafit init PROJECT_NAME

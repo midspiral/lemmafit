@@ -1,9 +1,14 @@
 {
-  "name": "@midspiral/lemmafit",
+  "name": "lemmafit",
   "description": "Make agents prove that their code is correct.",
   "author": "midspiral",
+  "license": "MIT",
   "homepage": "https://lemmafit.com",
-  "keywords": ["formal verification", "claude"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/midspiral/lemmafit.git"
+  },
+  "keywords": ["formal verification", "claude", "dafny", "verified", "proof"],
   "version": "0.1.0",
   "type": "commonjs",
   "bin": {
@@ -25,5 +30,5 @@
     "claimcheck": "0.1.0"
   },
   "engines": { "node": ">=18.0.0" },
-  "publishConfig": { "access": "restricted" }
+  "publishConfig": { "access": "public" }
 }
