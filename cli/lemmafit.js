@@ -111,8 +111,6 @@ function initProject(targetDir, templateName, serverBase) {
   console.log('');
   if (serverBase.toLowerCase() !== 'none') {
     console.log(`Server: ${serverBase}`);
-  } else {
-    console.log('Server: none (dashboard disabled)');
   }
   console.log('Then open Claude Code in the project directory.');
   console.log('');
