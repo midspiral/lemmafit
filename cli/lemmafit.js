@@ -156,8 +156,8 @@ function addModule(targetDir, moduleName, options = {}) {
         pkg.devDependencies.lemmafit = `file:${relPath}`;
       }
       if (!pkg.scripts) pkg.scripts = {};
-      if (!pkg.scripts.lemmafit) {
-        pkg.scripts.lemmafit = 'lemmafit daemon';
+      if (!pkg.scripts.daemon) {
+        pkg.scripts.daemon = 'lemmafit daemon';
       }
       fs.writeFileSync(pkgJsonPath, JSON.stringify(pkg, null, 2) + '\n');
     }
