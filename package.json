@@ -40,9 +40,9 @@
     "postinstall": "node ./cli/sync.js && node ./cli/download-dafny2js.js && node ./lib/download-dafny.js"
   },
   "dependencies": {
+    "claimcheck": "0.1.0",
     "js-yaml": "^4.1.1",
-    "ws": "^8.18.0",
-    "claimcheck": "0.1.0"
+    "ws": "^8.18.0"
   },
   "engines": {
     "node": ">=18.0.0"
