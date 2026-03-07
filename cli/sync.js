@@ -30,9 +30,9 @@ const SETTINGS = {
       "Read(src/dafny/**)",
       "Read(node_modules/lemmafit/docs/**)",
       "Edit(SPEC.yaml)",
-      "Edit(lemmafit/dafny/**)",
+      "Edit(lemmafit/dafny/*.dfy)",
       "Write(SPEC.yaml)",
-      "Write(lemmafit/dafny/**)",
+      "Write(lemmafit/dafny/*.dfy)",
       // Common build/dev commands
       "Bash(npm run build:*)",
       "Bash(npm run dev:*)",
