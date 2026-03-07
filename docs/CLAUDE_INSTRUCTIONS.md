@@ -19,6 +19,38 @@ Before writing code, ask yourself: "Is any part of this code verifiable?" Verifi
 - `src/App.tsx` - React app that uses the verified API
 - `lemmafit/.vibe/status.json` - Current verification status
 - `lemmafit/.vibe/logic-surface.json` - Logic interface/API
+- `lemmafit/.vibe/modules.json` - Multi-module configuration (optional, see below)
+
+## Multi-Module Projects
+
+By default, lemmafit uses a single Dafny module with the Replay kernel pattern (Domain.dfy → app.ts). For projects that need multiple independent verified modules, create `lemmafit/.vibe/modules.json`:
+
+```json
+[
+  {
+    "entry": "lemmafit/dafny/Workflow.dfy",
+    "appCore": "Workflow",
+    "outputName": "Workflow",
+    "jsonApi": true
+  },
+  {
+    "entry": "lemmafit/dafny/Validation.dfy",
+    "appCore": "Validation",
+    "outputName": "Validation",
+    "jsonApi": true,
+    "nullOptions": true
+  }
+]
+```
+
+When `modules.json` exists:
+- Each module is compiled independently to `src/dafny/{outputName}.cjs` and `src/dafny/{outputName}.ts`
+- Each module is its own AppCore (no separate AppCore module needed)
+- `jsonApi: true` enables full JSON marshalling (plain types in/out, no Dafny runtime types)
+- `nullOptions: true` maps `Option<T>` to `T | null` at the boundary
+- Modules don't know about each other — write a thin TypeScript glue file to connect them
+- The glue file is unverified but should be minimal and auditable
+- Prefer returning result types with verified error messages over boolean predicates — the UI can display them directly without duplicating logic
 
 ## Available Skills
 
@@ -51,7 +83,7 @@ Load lemmafit-dafny skill before writing or editing any Dafny.
 Write `.dfy` files in `lemmafit/dafny/` that formalize the verifiable spec entries. 
 
 A hook runs automatically after you write any `.dfy` file — it verifies and compiles immediately. You must wait for a response from the daemon before moving forward. The response will be one of two:
-- `✓ Verified and compiled` — success, spec queue auto-cleared, `src/dafny/app.ts` regenerated
+- `✓ Verified and compiled` — success, spec queue auto-cleared, wrappers regenerated (`src/dafny/app.ts` or per-module `src/dafny/{name}.ts`)
 - `✗ Verification failed` — fix the errors shown and write the file again
 
 Do not move to the next step until verification passes (verified and compiled).
@@ -76,7 +108,7 @@ Iterate on Steps 4 and 5 until audit returns only minor findings.
 ## Step 6: Write React code
 Load lemmafit-react-pattern skill before writing React code. 
 
-Only after verification passes. The auto-generated API is at `src/dafny/app.ts` (never edit this file).
+Only after verification passes. The auto-generated API is at `src/dafny/app.ts` (single-module) or `src/dafny/{name}.ts` (multi-module). Never edit generated files.
 
 - Create hooks in `src/hooks/` that wrap `Api.Init`, `Api.Dispatch`, `Api.Present`
 - Create components in `src/components/` that receive data/callbacks via props
