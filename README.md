@@ -17,10 +17,13 @@ cd PROJECT_NAME
 # Install deps (downloads Dafny automatically)
 npm install
 
-# In one terminal, start the verification daemon + Vite dev server
+# In one terminal, start the verification daemon
+npm run daemon
+
+# In another terminal, start the Vite dev server
 npm run dev
 
-# In another terminal, open Claude Code 
+# In a third terminal, open Claude Code
 claude
 ```
 
