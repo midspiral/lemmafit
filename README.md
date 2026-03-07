@@ -89,4 +89,4 @@ npm update lemmafit
 - Node.js 18+
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI
 
-Dafny and dafny2js are downloaded automatically during `npm install`.
+Dafny and dafny2js are downloaded automatically during `npm install` to `~/.lemmafit/`.
