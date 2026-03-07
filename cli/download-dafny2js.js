@@ -28,7 +28,7 @@ function guessRid(platformKey) {
 }
 
 function printBuildInstructions(rid) {
-  const installDir = path.join(path.resolve(__dirname, '..'), '.dafny2js');
+  const installDir = path.join(os.homedir(), '.lemmafit', '.dafny2js');
   console.error('');
   console.error('To build from source (requires .NET 8 SDK):');
   console.error('  git clone https://github.com/metareflection/dafny2js.git');
@@ -91,8 +91,7 @@ async function main() {
     process.exit(1);
   }
 
-  const packageDir = path.resolve(__dirname, '..');
-  const installDir = path.join(packageDir, '.dafny2js');
+  const installDir = path.join(os.homedir(), '.lemmafit', '.dafny2js');
   const binaryPath = path.join(installDir, 'dafny2js');
   const versionFile = path.join(installDir, 'version');
 
