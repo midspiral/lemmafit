@@ -103,7 +103,8 @@ function initProject(targetDir, templateName, serverBase) {
   console.log('');
   console.log(`  cd ${targetDir}`);
   console.log('  npm install          # Downloads Dafny, installs deps, syncs hooks');
-  console.log('  npm run dev          # Starts daemon + Vite');
+  console.log('  npm run daemon       # In one terminal, start the verification daemon');
+  console.log('  npm run dev          # In another terminal, start the Vite dev server');
   if (serverBase.toLowerCase() !== 'none') {
     console.log('  lemmafit dashboard   # Open the dashboard');
   }
