@@ -10,7 +10,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 const os = require('os');
 
-const DAFNY2JS_VERSION = '0.9.1';
+const DAFNY2JS_VERSION = '0.9.2';
 
 const PLATFORM_RIDS = {
   'darwin-arm64': 'osx-arm64',
