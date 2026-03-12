@@ -31,7 +31,7 @@ claude
 
 ## Use Cases / Considerations
 
-- lemmafit works with greenfield projects only. You must begin a project with lemmafit. Support for existing codebases is in the pipeline. 
+- lemmafit works with greenfield projects. You typically begin a project with `lemmafit init` though `lemmafit add` provides rudimentary support for existing codebases.
 
 - lemmafit compiles Dafny to Typescript which then hooks into a React app. In the future, we will support other languages and frameworks. 
 
