@@ -38,7 +38,8 @@ By default, lemmafit uses a single Dafny module with the Replay kernel pattern (
     "appCore": "Validation",
     "outputName": "Validation",
     "jsonApi": true,
-    "nullOptions": true
+    "nullOptions": true,
+    "target": "node"
   }
 ]
 ```
@@ -48,6 +49,7 @@ When `modules.json` exists:
 - Each module is its own AppCore (no separate AppCore module needed)
 - `jsonApi: true` enables full JSON marshalling (plain types in/out, no Dafny runtime types)
 - `nullOptions: true` maps `Option<T>` to `T | null` at the boundary
+- `target` sets the dafny2js compilation target (default: `"client"`). Valid values: `"client"` (browser/React), `"node"` (Node.js, uses `fs.readFileSync`), `"inline"` (universal, inlines .cjs code), `"deno"` (Deno adapter), `"cloudflare"` (Cloudflare Workers adapter)
 - Modules don't know about each other — write a thin TypeScript glue file to connect them
 - The glue file is unverified but should be minimal and auditable
 - Prefer returning result types with verified error messages over boolean predicates — the UI can display them directly without duplicating logic
