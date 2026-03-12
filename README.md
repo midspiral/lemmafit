@@ -4,7 +4,7 @@ Make agents **prove** that their code is correct.
 
 Read our launch post: [Introducing lemmafit: A Verifier in the AI Loop](https://midspiral.com/blog/introducing-lemmafit-a-verifier-in-the-ai-loop/). 
 
-Lemmafit integrates [Dafny](https://dafny.org/) formal verification into your development workflow via [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Business logic, state machines, and other logic is written in Dafny, mathematically verified, then auto-compiled to TypeScript for use in your React app.
+Lemmafit integrates [Dafny](https://dafny.org/) formal verification into your development workflow via [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Business logic, state machines, and other logic are written in Dafny, mathematically verified, then auto-compiled to TypeScript for use in your React app.
 
 ## Quick Start
 
