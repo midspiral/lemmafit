@@ -9,6 +9,7 @@
  *   lemmafit add [Name]                   - Add a verified module (or just bootstrap infrastructure)
  *   lemmafit add <Name> --null-options    - Add with Option<T> → T | null mapping
  *   lemmafit add <Name> --no-json-api     - Add without JSON marshalling
+ *   lemmafit add <Name> --target <target> - Set compilation target (client|node|inline|deno|cloudflare)
  *   lemmafit sync [dir]     - Sync system files from current package version
  *   lemmafit daemon [dir]   - Run the verification daemon
  *   lemmafit logs [dir]     - View the dev log
