@@ -212,6 +212,7 @@ function addModule(targetDir, moduleName, options = {}) {
     jsonApi: options.jsonApi !== false,
     nullOptions: options.nullOptions || false
   };
+  if (options.target) moduleEntry.target = options.target;
   modules.push(moduleEntry);
   fs.writeFileSync(modulesPath, JSON.stringify(modules, null, 2) + '\n');
 
@@ -311,13 +312,16 @@ const command = args[0];
 const clearFlag = args.includes('--clear');
 const nullOptionsFlag = args.includes('--null-options');
 const noJsonApiFlag = args.includes('--no-json-api');
+const targetIdx = args.indexOf('--target');
+const targetFlag = targetIdx !== -1 ? args[targetIdx + 1] : null;
 const templateIdx = args.indexOf('--template');
 const templateName = templateIdx !== -1 ? args[templateIdx + 1] : DEFAULT_TEMPLATE;
 const serverIdx = args.indexOf('--server');
 const serverBase = serverIdx !== -1 ? args[serverIdx + 1] : DEFAULT_SERVER;
 const positionalArgs = args.filter((a, i) =>
   a !== '--clear' && a !== '--template' && a !== '--server' &&
-  a !== '--null-options' && a !== '--no-json-api' &&
+  a !== '--null-options' && a !== '--no-json-api' && a !== '--target' &&
+  (targetIdx === -1 || i !== targetIdx + 1) &&
   (templateIdx === -1 || i !== templateIdx + 1) &&
   (serverIdx === -1 || i !== serverIdx + 1)
 ).slice(1);
@@ -337,7 +341,8 @@ switch (command) {
   case 'add':
     addModule(target, addModuleName, {
       jsonApi: !noJsonApiFlag,
-      nullOptions: nullOptionsFlag
+      nullOptions: nullOptionsFlag,
+      target: targetFlag
     });
     break;
   case 'sync':
@@ -364,6 +369,7 @@ switch (command) {
     console.log('  lemmafit add [Name]                    - Add a verified module (or just bootstrap infrastructure)');
     console.log('  lemmafit add <Name> --null-options     - Add with Option<T> → T | null mapping');
     console.log('  lemmafit add <Name> --no-json-api      - Add without JSON marshalling');
+    console.log('  lemmafit add <Name> --target <target>  - Set compilation target (client|node|inline|deno|cloudflare)');
     console.log('  lemmafit sync [dir]          - Sync system files from package');
     console.log('  lemmafit daemon [dir]        - Run the verification daemon');
     console.log('  lemmafit dashboard [dir]     - Open the dashboard in a browser');
