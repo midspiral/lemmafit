@@ -6,6 +6,10 @@
  *   lemmafit init [dir]                   - Initialize a new lemmafit project (blank)
  *   lemmafit init --template <name> [dir] - Initialize from a named template
  *   lemmafit init --server <url|none> [dir] - Use a custom server (default: none)
+ *   lemmafit add [Name]                   - Add a verified module (or just bootstrap infrastructure)
+ *   lemmafit add <Name> --null-options    - Add with Option<T> → T | null mapping
+ *   lemmafit add <Name> --no-json-api     - Add without JSON marshalling
+ *   lemmafit add <Name> --target <target> - Set compilation target (client|node|inline|deno|cloudflare)
  *   lemmafit sync [dir]     - Sync system files from current package version
  *   lemmafit daemon [dir]   - Run the verification daemon
  *   lemmafit logs [dir]     - View the dev log
@@ -117,6 +121,116 @@ function initProject(targetDir, templateName, serverBase) {
   console.log('');
 }
 
+function addModule(targetDir, moduleName, options = {}) {
+  const absTarget = path.resolve(targetDir);
+
+  const lemmafitDir = path.join(absTarget, 'lemmafit');
+  const vibeDir = path.join(lemmafitDir, '.vibe');
+  const dafnyDir = path.join(lemmafitDir, 'dafny');
+  const configPath = path.join(vibeDir, 'config.json');
+  const modulesPath = path.join(vibeDir, 'modules.json');
+  const isFirstRun = !fs.existsSync(lemmafitDir);
+
+  // First run: bootstrap lemmafit infrastructure
+  if (isFirstRun) {
+    console.log('First lemmafit module — bootstrapping infrastructure...');
+    fs.mkdirSync(dafnyDir, { recursive: true });
+    fs.mkdirSync(vibeDir, { recursive: true });
+
+    // Minimal config (no entry/appCore since we use modules.json)
+    fs.writeFileSync(configPath, JSON.stringify({}, null, 2) + '\n');
+
+    // Empty modules array
+    fs.writeFileSync(modulesPath, JSON.stringify([], null, 2) + '\n');
+
+    // Sync .claude/ system files
+    syncProject(absTarget);
+
+    // Add lemmafit as devDependency and daemon script to package.json
+    // Create a minimal package.json if one doesn't exist
+    const pkgJsonPath = path.join(absTarget, 'package.json');
+    if (!fs.existsSync(pkgJsonPath)) {
+      const dirName = path.basename(absTarget);
+      fs.writeFileSync(pkgJsonPath, JSON.stringify({
+        name: dirName,
+        private: true
+      }, null, 2) + '\n');
+      console.log('  Created package.json');
+    }
+    const pkg = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'));
+    if (!pkg.devDependencies) pkg.devDependencies = {};
+    if (!pkg.devDependencies.lemmafit && !(pkg.dependencies && pkg.dependencies.lemmafit)) {
+      const lemmaPackageDir = path.resolve(__dirname, '..');
+      const relPath = path.relative(absTarget, lemmaPackageDir);
+      pkg.devDependencies.lemmafit = `file:${relPath}`;
+    }
+    if (!pkg.scripts) pkg.scripts = {};
+    if (!pkg.scripts.daemon) {
+      pkg.scripts.daemon = 'lemmafit daemon';
+    }
+    fs.writeFileSync(pkgJsonPath, JSON.stringify(pkg, null, 2) + '\n');
+
+    console.log('  Created lemmafit/dafny/');
+    console.log('  Created lemmafit/.vibe/config.json');
+    console.log('  Created lemmafit/.vibe/modules.json');
+    console.log('  Synced .claude/ system files');
+    console.log('');
+  }
+
+  if (!moduleName) return;
+
+  // Load existing modules
+  let modules = [];
+  if (fs.existsSync(modulesPath)) {
+    try { modules = JSON.parse(fs.readFileSync(modulesPath, 'utf8')); } catch {}
+  }
+
+  // Check for duplicate
+  if (modules.some(m => m.outputName === moduleName)) {
+    console.error(`Error: Module '${moduleName}' already exists in modules.json`);
+    process.exit(1);
+  }
+
+  // Scaffold the Dafny file
+  const dafnyFile = path.join(dafnyDir, `${moduleName}.dfy`);
+  if (fs.existsSync(dafnyFile)) {
+    console.error(`Error: ${path.relative(absTarget, dafnyFile)} already exists`);
+    process.exit(1);
+  }
+
+  const dafnyContent = `module ${moduleName} {
+  // Your verified logic here
+}
+`;
+  fs.mkdirSync(dafnyDir, { recursive: true });
+  fs.writeFileSync(dafnyFile, dafnyContent);
+
+  // Add entry to modules.json
+  const moduleEntry = {
+    entry: `lemmafit/dafny/${moduleName}.dfy`,
+    appCore: moduleName,
+    outputName: moduleName,
+    jsonApi: options.jsonApi !== false,
+    nullOptions: options.nullOptions || false
+  };
+  if (options.target) moduleEntry.target = options.target;
+  modules.push(moduleEntry);
+  fs.writeFileSync(modulesPath, JSON.stringify(modules, null, 2) + '\n');
+
+  // Print results
+  console.log(`  Created lemmafit/dafny/${moduleName}.dfy`);
+  console.log(`  Added to lemmafit/.vibe/modules.json`);
+  console.log('');
+  console.log(`  Next: write your verified logic in ${moduleName}.dfy`);
+  console.log(`  The daemon will compile it to src/dafny/${moduleName}.ts`);
+  console.log(`  Import with: import ${moduleName} from './src/dafny/${moduleName}.ts'`);
+  console.log('');
+  if (modules.length > 1) {
+    console.log(`  Modules: ${modules.map(m => m.outputName).join(', ')}`);
+    console.log('');
+  }
+}
+
 function showLogs(targetDir, clear) {
   const absTarget = path.resolve(targetDir);
   const logPath = path.join(absTarget, 'lemmafit', 'logs', 'lemmafit.log');
@@ -197,20 +311,40 @@ function runDaemon(targetDir) {
 const args = process.argv.slice(2);
 const command = args[0];
 const clearFlag = args.includes('--clear');
+const nullOptionsFlag = args.includes('--null-options');
+const noJsonApiFlag = args.includes('--no-json-api');
+const targetIdx = args.indexOf('--target');
+const targetFlag = targetIdx !== -1 ? args[targetIdx + 1] : null;
 const templateIdx = args.indexOf('--template');
 const templateName = templateIdx !== -1 ? args[templateIdx + 1] : DEFAULT_TEMPLATE;
 const serverIdx = args.indexOf('--server');
 const serverBase = serverIdx !== -1 ? args[serverIdx + 1] : DEFAULT_SERVER;
 const positionalArgs = args.filter((a, i) =>
   a !== '--clear' && a !== '--template' && a !== '--server' &&
+  a !== '--null-options' && a !== '--no-json-api' && a !== '--target' &&
+  (targetIdx === -1 || i !== targetIdx + 1) &&
   (templateIdx === -1 || i !== templateIdx + 1) &&
   (serverIdx === -1 || i !== serverIdx + 1)
 ).slice(1);
-const target = positionalArgs[0] || '.';
+let addModuleName = null;
+let target;
+if (command === 'add') {
+  addModuleName = positionalArgs[0] || null;
+  target = '.';
+} else {
+  target = positionalArgs[0] || '.';
+}
 
 switch (command) {
   case 'init':
     initProject(target, templateName, serverBase);
+    break;
+  case 'add':
+    addModule(target, addModuleName, {
+      jsonApi: !noJsonApiFlag,
+      nullOptions: nullOptionsFlag,
+      target: targetFlag
+    });
     break;
   case 'sync':
     syncProject(target);
@@ -232,7 +366,11 @@ switch (command) {
     console.log('Usage:');
     console.log('  lemmafit init [dir]                   - Create a new project (blank template)');
     console.log('  lemmafit init --template <name> [dir] - Create from a named template');
-    console.log('  lemmafit init --server <url> [dir]      - Use a custom server (default: none)');
+    console.log('  lemmafit init --server <url> [dir]    - Use a custom server (default: none)');
+    console.log('  lemmafit add [Name]                    - Add a verified module (or just bootstrap infrastructure)');
+    console.log('  lemmafit add <Name> --null-options     - Add with Option<T> → T | null mapping');
+    console.log('  lemmafit add <Name> --no-json-api      - Add without JSON marshalling');
+    console.log('  lemmafit add <Name> --target <target>  - Set compilation target (client|node|inline|deno|cloudflare)');
     console.log('  lemmafit sync [dir]          - Sync system files from package');
     console.log('  lemmafit daemon [dir]        - Run the verification daemon');
     console.log('  lemmafit dashboard [dir]     - Open the dashboard in a browser');
