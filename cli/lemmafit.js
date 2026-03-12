@@ -145,22 +145,29 @@ function addModule(targetDir, moduleName, options = {}) {
     // Sync .claude/ system files
     syncProject(absTarget);
 
-    // Add lemmafit as devDependency and daemon script if package.json exists
+    // Add lemmafit as devDependency and daemon script to package.json
+    // Create a minimal package.json if one doesn't exist
     const pkgJsonPath = path.join(absTarget, 'package.json');
-    if (fs.existsSync(pkgJsonPath)) {
-      const pkg = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'));
-      if (!pkg.devDependencies) pkg.devDependencies = {};
-      if (!pkg.devDependencies.lemmafit && !(pkg.dependencies && pkg.dependencies.lemmafit)) {
-        const lemmaPackageDir = path.resolve(__dirname, '..');
-        const relPath = path.relative(absTarget, lemmaPackageDir);
-        pkg.devDependencies.lemmafit = `file:${relPath}`;
-      }
-      if (!pkg.scripts) pkg.scripts = {};
-      if (!pkg.scripts.daemon) {
-        pkg.scripts.daemon = 'lemmafit daemon';
-      }
-      fs.writeFileSync(pkgJsonPath, JSON.stringify(pkg, null, 2) + '\n');
+    if (!fs.existsSync(pkgJsonPath)) {
+      const dirName = path.basename(absTarget);
+      fs.writeFileSync(pkgJsonPath, JSON.stringify({
+        name: dirName,
+        private: true
+      }, null, 2) + '\n');
+      console.log('  Created package.json');
     }
+    const pkg = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'));
+    if (!pkg.devDependencies) pkg.devDependencies = {};
+    if (!pkg.devDependencies.lemmafit && !(pkg.dependencies && pkg.dependencies.lemmafit)) {
+      const lemmaPackageDir = path.resolve(__dirname, '..');
+      const relPath = path.relative(absTarget, lemmaPackageDir);
+      pkg.devDependencies.lemmafit = `file:${relPath}`;
+    }
+    if (!pkg.scripts) pkg.scripts = {};
+    if (!pkg.scripts.daemon) {
+      pkg.scripts.daemon = 'lemmafit daemon';
+    }
+    fs.writeFileSync(pkgJsonPath, JSON.stringify(pkg, null, 2) + '\n');
 
     console.log('  Created lemmafit/dafny/');
     console.log('  Created lemmafit/.vibe/config.json');
