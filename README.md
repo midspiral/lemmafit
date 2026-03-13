@@ -57,6 +57,7 @@ my-app/
 │   │   └── Replay.dfy           # Generic Replay kernel
 │   ├── .vibe/
 │   │   ├── config.json           # Project config
+│   │   ├── modules.json          # Module registry (for multi-module projects)
 │   │   ├── status.json           # Verification status (generated)
 │   │   └── claims.json           # Proof obligations (generated)
 │   └── reports/
@@ -75,6 +76,7 @@ my-app/
 
 ```bash
 lemmafit init [dir]                # Create project from template
+lemmafit add [Name]                # Add a verified module to an existing project
 lemmafit sync [dir]                # Re-sync system files (.claude/, hooks)
 lemmafit daemon [dir]              # Run verification daemon standalone
 lemmafit logs [dir]                # View daemon log
