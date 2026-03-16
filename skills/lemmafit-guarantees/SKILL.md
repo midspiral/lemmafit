@@ -1,3 +1,8 @@
+---
+name: lemmafit-guarantees
+description: Generate human-readable guarantees from proven Dafny code and verify them with claimcheck. Use after verification succeeds and SPEC.yaml is in sync with Dafny. Produces guarantees.json, claimcheck-mapping.json, runs claimcheck-multi, and generates guarantees.md report.
+---
+
 # Generate Guarantees and Run Claimcheck
 
 You are generating human-readable guarantees from proven Dafny code and verifying them with claimcheck.
@@ -117,15 +122,15 @@ Parse the claimcheck results and report:
 - **Disputed** — a discrepancy was found. Show the `discrepancy` text and `weakeningType` (tautology, weakened-postcondition, narrowed-scope, wrong-property).
 - **Error** — lemma not found in source. Check the lemmaName.
 
-**If any claims are disputed:** Suggest specific fixes to the Dafny code or the requirement text. If the user agrees, make the fixes, wait for re-verification, and re-run the guarantees process. 
+**If any claims are disputed:** Suggest specific fixes to the Dafny code or the requirement text. If the user agrees, make the fixes, wait for re-verification, and re-run the guarantees process.
 
 ## Step 8: Ensure all files up to date
 
-Once iteration is complete, compare `claimcheck-mapping.json` with `guarantees.json` to ensure they contain equivalent information. If there's a discrepancy, trace back to the Dafny code to find which is most accurate. Adjust the relevant file accordingly and re-run `/guarantees` command. Once confirmed, report that the files are in sync.  
+Once iteration is complete, compare `claimcheck-mapping.json` with `guarantees.json` to ensure they contain equivalent information. If there's a discrepancy, trace back to the Dafny code to find which is most accurate. Adjust the relevant file accordingly and re-run `/guarantees` command. Once confirmed, report that the files are in sync.
 
 ## Step 9: Generate guarantees.md via the script
 
-Do this only after Step 9 confirms that `claimcheck-mapping.json` and `guarantees.json` are in sync.  
+Do this only after Step 8 confirms that `claimcheck-mapping.json` and `guarantees.json` are in sync.
 
 Run the deterministic report generator:
 
@@ -135,4 +140,4 @@ npx lemmafit-generate-guarantees
 
 This reads `lemmafit/.vibe/guarantees.json`, `lemmafit/.vibe/claimcheck.json`, and `SPEC.yaml` and writes `lemmafit/.vibe/guarantees.md`. Do NOT write this file manually — always use the script so the report matches the JSON exactly.
 
-Report to the user: "A report of your app's guarantees has been generated in lemmafit/reports/guarantees.md" 
+Report to the user: "A report of your app's guarantees has been generated in lemmafit/reports/guarantees.md"
