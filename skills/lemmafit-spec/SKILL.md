@@ -54,7 +54,8 @@ entries:
     module: AppCore
     depends_on: []
     verifiable: true
-    status: verified
+    guarantee_type: verified
+    state: ADDRESSED
   - id: spec-002
     req_id: null
     title: The increment button displays the current count
