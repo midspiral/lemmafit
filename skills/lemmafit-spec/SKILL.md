@@ -39,7 +39,7 @@ SPEC.yaml is a structured YAML file with an `entries` list. Each entry has:
 - `depends_on` — list of spec IDs this entry depends on
 - `verifiable` — whether this can be proven in Dafny 
 - `guarantee_type` — `verified`, `assumed`, or `trusted`
-- `state` - `DRAFT`, `ADDRESSED`, `null`- only use `addressed` if the corresponding Dafny module or property have been verified. Use null for `verifiable: false`
+- `state` - `DRAFT`, `ADDRESSED`, `null` — only use `ADDRESSED` if the corresponding Dafny module or property have been verified. Use `null` for `verifiable: false`
 
 ### Example
 ```yaml

@@ -9,7 +9,7 @@ You are generating human-readable guarantees from proven Dafny code and verifyin
 
 ## Step 0: Make sure the state of the project is verified
 
-Check `lemmafit/.vibe/status.json` for the current verification status.
+Check your context for verification status of the project.
 
 ## Step 1: Read project data
 
