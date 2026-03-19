@@ -60,6 +60,10 @@ When `modules.json` exists:
  - `lemmafit-proofs`: Load this skill before writing or editing lemmas
  - `lemmafit-react-pattern`: Load this skill before writing React 
  - `lemmafit-spec`: Load this skill when user asks to add or edit feature, and before writing or editing the spec.yaml file 
+ - `lemmafit-guarantees`: Load this skill to generate a human-readable guarantees report from proven Dafny code and verify claims with claimcheck
+ - `lemmafit-pre-react-audits`: Load this skill before writing React to audit proof strength and catch unverified logic
+ - `lemmafit-post-react-audit`: Load this skill after writing React to catch effect-free logic that should be in Dafny
+
 
 If you try to read any of these files and they are missing, alert the user. 
 

@@ -40,7 +40,7 @@ Analyze the claims from `claims.json` and map them to spec entries from `SPEC.ya
 
 ## Step 3: Write guarantees.json
 
-Write `lemmafit/.vibe/guarantees.json` with this format:
+Write `reports/guarantees.json` with this format:
 
 ```json
 {
@@ -138,6 +138,6 @@ Run the deterministic report generator:
 npx lemmafit-generate-guarantees
 ```
 
-This reads `lemmafit/.vibe/guarantees.json`, `lemmafit/.vibe/claimcheck.json`, and `SPEC.yaml` and writes `lemmafit/.vibe/guarantees.md`. Do NOT write this file manually — always use the script so the report matches the JSON exactly.
+This reads `reports/guarantees.json`, `reports/claimcheck.json`, and `SPEC.yaml` and writes `reports/guarantees.md`. Do NOT write this file manually — always use the script so the report matches the JSON exactly.
 
 Report to the user: "A report of your app's guarantees has been generated in lemmafit/reports/guarantees.md"

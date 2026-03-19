@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * Generates lemmafit/.vibe/guarantees.md deterministically from:
- *   - lemmafit/.vibe/guarantees.json (claim-to-spec mapping)
+ * Generates reports/guarantees.md deterministically from:
+ *   - reports/guarantees.json (claim-to-spec mapping)
  *   - lemmafit/.vibe/claimcheck.json (claimcheck results, optional)
  *   - SPEC.yaml (for trusted entries and group info)
  *
