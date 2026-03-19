@@ -110,19 +110,6 @@ function syncProject(targetDir) {
     fs.writeFileSync(claudeMdPath, POINTER_LINE + '\n');
   }
 
-  // Sync .claude/commands/ from package
-  const srcCommands = path.join(__dirname, '..', 'commands');
-  if (fs.existsSync(srcCommands)) {
-    const commandsDir = path.join(claudeDir, 'commands');
-    fs.mkdirSync(commandsDir, { recursive: true });
-    for (const file of fs.readdirSync(srcCommands)) {
-      fs.copyFileSync(
-        path.join(srcCommands, file),
-        path.join(commandsDir, file)
-      );
-    }
-  }
-
   // Sync .claude/skills/ from package
   const srcSkills = path.join(__dirname, '..', 'skills');
   if (fs.existsSync(srcSkills)) {

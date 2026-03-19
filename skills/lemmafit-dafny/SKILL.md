@@ -6,7 +6,7 @@ description: Dafny code patterns and reference for lemmafit apps. Use when writi
 # Lemmafit Dafny
 
 ## When to Write Code in Dafny
-- ALL `verifiable:true` entries in the spec MUST be written in Dafny (do not write verifiable code directly in JavaScript or TypeSscript)
+- ALL `verifiable:true` entries in the spec MUST be written in Dafny (do not write verifiable code directly in JavaScript or TypeScript)
 
 ## Dafny Pattern Example
 
