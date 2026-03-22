@@ -44,7 +44,7 @@ claude
 2. The agent will write a `SPEC.yaml` and write verified logic in `lemmafit/dafny/Domain.dfy`
 3. The **daemon** watches `.dfy` files, runs `dafny verify`, and on success compiles to `src/dafny/Domain.cjs` + `src/dafny/app.ts`
 4. The agent will hook the generated TypeScript API into a React app — the logic is proven correct
-5. After proofs complete, run custom command in Claude Code `/guarantees` to activate claimcheck and generate a guarantees report
+5. After proofs complete, run the `/guarantees` skill to activate claimcheck and generate a guarantees report
 
 ## Project Structure
 
