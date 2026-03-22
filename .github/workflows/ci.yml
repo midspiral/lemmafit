@@ -29,7 +29,6 @@ jobs:
           test -f /tmp/test-project/.gitignore
           test -f /tmp/test-project/.claude/settings.json
           test -f /tmp/test-project/.claude/CLAUDE.md
-          test -d /tmp/test-project/.claude/commands
           test -d /tmp/test-project/.claude/skills
           # template.gitignore should not exist in the output
           test ! -f /tmp/test-project/template.gitignore
