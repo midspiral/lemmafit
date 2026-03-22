@@ -99,7 +99,8 @@ function initProject(targetDir, templateName, serverBase) {
   }
   config.secret = secret;
   if (serverBase.toLowerCase() !== 'none') {
-    const serverWsUrl = `${serverBase}/ws?project=${encodeURIComponent(projectName)}`;
+    const sep = serverBase.includes('?') ? '&' : '?';
+    const serverWsUrl = `${serverBase}${sep}project=${encodeURIComponent(projectName)}`;
     config.server = serverWsUrl;
   }
   fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
