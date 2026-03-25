@@ -96,5 +96,6 @@ npm update lemmafit
 
 - Node.js 18+
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI
+- [claimcheck](https://github.com/metareflection/claimcheck) (`npm install -g claimcheck`) — needed for the `/guarantees` skill
 
 Dafny and dafny2js are downloaded automatically during `npm install` to `~/.lemmafit/`.
