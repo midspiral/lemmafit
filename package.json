@@ -36,7 +36,7 @@
     "lemmafit-generate-guarantees": "cli/generate-guarantees-md.js"
   },
   "scripts": {
-    "postinstall": "node ./cli/sync.js && node ./cli/download-dafny2js.js && node ./lib/download-dafny.js"
+    "postinstall": "node ./cli/sync.js && node ./cli/download-dafny2js.js && node ./lib/download-dafny.js && node ./cli/check-claimcheck.js"
   },
   "dependencies": {
     "js-yaml": "^4.1.1",
