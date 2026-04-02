@@ -18,7 +18,7 @@
 const path = require('path');
 const fs = require('fs');
 const { initLog, log } = require('../lib/log');
-const { requestDaemon } = require('../lib/daemon-client');
+const { requestDaemon, getIpcPath } = require('../lib/daemon-client');
 
 async function readStdin() {
   const chunks = [];
@@ -132,7 +132,7 @@ async function main() {
   let status;
 
   try {
-    const sockPath = path.join(projectDir, 'lemmafit', '.vibe', 'daemon.sock');
+    const sockPath = getIpcPath(path.join(projectDir, 'lemmafit', '.vibe'));
     status = await requestDaemon(sockPath, { action: 'verify' });
     log('verify', 'Used daemon (socket)');
   } catch (err) {
