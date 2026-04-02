@@ -18,6 +18,7 @@ const PLATFORM_RIDS = {
   'linux-x64': 'linux-x64',
   'linux-arm64': 'linux-arm64',
   'win32-x64': 'win-x64',
+  'win32-arm64': 'win-x64',
 };
 
 function getPlatformKey() {
@@ -25,7 +26,7 @@ function getPlatformKey() {
 }
 
 function guessRid(platformKey) {
-  return PLATFORM_RIDS[platformKey] || (platformKey === 'win32-x64' ? 'win-x64' : platformKey);
+  return PLATFORM_RIDS[platformKey] || platformKey;
 }
 
 function printBuildInstructions(rid) {
