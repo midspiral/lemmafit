@@ -10,13 +10,14 @@ const path = require('path');
 const { execSync } = require('child_process');
 const os = require('os');
 
-const DAFNY2JS_VERSION = '0.9.5';
+const DAFNY2JS_VERSION = '0.10.0';
 
 const PLATFORM_RIDS = {
   'darwin-arm64': 'osx-arm64',
   'darwin-x64': 'osx-x64',
   'linux-x64': 'linux-x64',
   'linux-arm64': 'linux-arm64',
+  'win32-x64': 'win-x64',
 };
 
 function getPlatformKey() {
@@ -35,8 +36,9 @@ function printBuildInstructions(rid) {
   console.error('  cd dafny2js');
   console.error(`  dotnet publish -c Release -r ${rid} --self-contained /p:PublishSingleFile=true`);
   console.error('');
+  const binaryName = os.platform() === 'win32' ? 'dafny2js.exe' : 'dafny2js';
   console.error('Then copy the binary to:');
-  console.error(`  ${path.join(installDir, 'dafny2js')}`);
+  console.error(`  ${path.join(installDir, binaryName)}`);
 }
 
 function download(url, dest) {
@@ -92,7 +94,8 @@ async function main() {
   }
 
   const installDir = path.join(os.homedir(), '.lemmafit', '.dafny2js');
-  const binaryPath = path.join(installDir, 'dafny2js');
+  const binaryName = os.platform() === 'win32' ? 'dafny2js.exe' : 'dafny2js';
+  const binaryPath = path.join(installDir, binaryName);
   const versionFile = path.join(installDir, 'version');
 
   // Check if correct version is already installed
