@@ -9,7 +9,10 @@
     "url": "git+https://github.com/midspiral/lemmafit.git"
   },
   "keywords": [
-    "formal verification",
+    "formal verification",  
+    "verification",
+    "formal-verification",
+    "verified",
     "claude",
     "dafny",
     "verified",
